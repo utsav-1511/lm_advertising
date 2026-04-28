@@ -5,6 +5,7 @@ import About from "./Pages/About";
 import { BrowserRouter, Routes, Route } from "react-router";
 import MainLayout from "./mainLayout";
 import ReachUs from "./Pages/ReachUs";
+import Locations from "./Pages/Locations";
 
 function App(){
 
@@ -18,7 +19,7 @@ function App(){
                 <Route path="reach-us" element={<ReachUs></ReachUs>}></Route>
                 <Route path="our-products" element={<ReachUs></ReachUs>}></Route>
                 <Route path="our-clients" element={<ReachUs></ReachUs>}></Route>
-                <Route path="our-locations" element={<ReachUs></ReachUs>}></Route>
+                <Route path="our-locations" element={<Locations/>}></Route>
             </Route>
         </Routes>
         </BrowserRouter>

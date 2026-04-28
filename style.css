@@ -48,3 +48,18 @@ body {
 .about-img-slide {
   transition: opacity 1.2s ease, transform 1.2s ease;
 }
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-up {
+  animation: fadeUp 0.6s ease-out forwards;
+  opacity: 0; /* start hidden, animation will make visible */
+}

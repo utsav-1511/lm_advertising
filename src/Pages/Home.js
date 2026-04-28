@@ -4,37 +4,50 @@ import {
   ArrowRight, PhoneCall, MonitorPlay, Target, 
   MapPin, Send, ShieldCheck, Clock, CheckCircle, 
   Printer, TrendingUp, Presentation, Image as ImageIcon,
-  Quote, Building
+  Quote, Building, ChevronLeft, ChevronRight
 } from "lucide-react";
 import { useNavigate } from "react-router"; // Agar react-router-dom use kar rahe hain toh wahan se
 const CEO_IMAGE = new URL("/public/images/ceo-Imadvertising.jpg", import.meta.url).href;
 
+const HOARDING_SLIDES = [
+  {
+    src: "https://images.unsplash.com/photo-1531935916357-224c16b5ace3?auto=format&fit=crop&w=1600&q=85",
+    title: "Prime Hoarding Locations",
+    description: "High-visibility outdoor spaces planned for real traffic and daily recall.",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1617727553252-65863c156eb0?auto=format&fit=crop&w=1600&q=85",
+    title: "Large Format Outdoor Branding",
+    description: "Readable layouts, strong colours, and clean print execution for busy roads.",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1529253355930-ddbe423a2ac7?auto=format&fit=crop&w=1600&q=85",
+    title: "Campaigns That Get Noticed",
+    description: "From artwork to installation, every detail is handled with practical care.",
+  },
+];
+
 const InstagramIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>;
-const FacebookIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>;
-const TwitterIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>;
 const LinkedinIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>;
 
-// Animation Variants
-const fadeInUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
-};
-
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15
-    }
-  }
-};
-
 const Home = () => {
-  const [stats, setStats] = useState({ projects: 0, experience: 0, retention: 0 });
+  const [activeSlide, setActiveSlide] = useState(0);
   const navigate = useNavigate();
   const ctaRef = useRef(null); // CTA section ke liye reference banayein
   const servicesRef = useRef(null);
+
+  const goToPreviousSlide = () => {
+    setActiveSlide((current) =>
+      current === 0 ? HOARDING_SLIDES.length - 1 : current - 1
+    );
+  };
+
+  const goToNextSlide = () => {
+    setActiveSlide((current) =>
+      current === HOARDING_SLIDES.length - 1 ? 0 : current + 1
+    );
+  };
+
   const scrollToServices = () => {
     servicesRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -44,119 +57,101 @@ const Home = () => {
   };
 
   useEffect(() => {
-    // Simple count-up animation for stats
-    const interval = setInterval(() => {
-      setStats(prev => ({
-        projects: prev.projects < 200 ? prev.projects + 5 : 200,
-        experience: prev.experience < 10 ? prev.experience + 1 : 10,
-        retention: prev.retention < 95 ? prev.retention + 2 : 95
-      }));
-    }, 40);
-    return () => clearInterval(interval);
+    const slideTimer = setInterval(goToNextSlide, 4500);
+    return () => clearInterval(slideTimer);
   }, []);
+
+  const currentSlide = HOARDING_SLIDES[activeSlide];
 
   return (
     <div className="w-full flex flex-col items-center overflow-x-hidden text-[var(--text-primary)]">
-      
-      {/* 1. HERO SECTION */}
-      <section className="relative w-full min-h-[90vh] flex items-center justify-center pt-24 pb-12 px-6 lg:px-20">
-        <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none">
-            <div className="w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] bg-[#FF3B3B] opacity-10 blur-[100px] sm:blur-[120px] rounded-full"></div>
-        </div>
+      <section className="relative flex min-h-[92svh] w-full items-end overflow-hidden pt-24">
+        {HOARDING_SLIDES.map((slide, index) => (
+          <motion.img
+            key={slide.title}
+            src={slide.src}
+            alt={slide.title}
+            initial={false}
+            animate={{
+              opacity: index === activeSlide ? 1 : 0,
+              scale: index === activeSlide ? 1 : 1.04,
+            }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        ))}
 
-        <div className="z-10 w-full max-w-7xl grid lg:grid-cols-2 gap-12 items-center">
-          <motion.div 
-            initial="hidden" 
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={staggerContainer}
-            className="flex flex-col gap-6 text-center lg:text-left items-center lg:items-start"
+        <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/25 to-black/75" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-transparent to-transparent" />
+
+        <div className="relative z-10 mx-auto grid w-full max-w-7xl gap-8 px-6 pb-12 lg:grid-cols-[1fr_auto] lg:px-20">
+          <motion.div
+            key={currentSlide.title}
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, ease: "easeOut" }}
+            className="max-w-3xl text-white"
           >
-            <motion.div variants={fadeInUp} className="inline-block">
-                <span className="px-4 py-1.5 rounded-full border border-[#FF3B3B]/30 bg-[#FF3B3B]/10 text-[#FF3B3B] text-sm font-semibold backdrop-blur-md">
-                    Premium OOH Advertising
-                </span>
-            </motion.div>
-            <motion.h1 variants={fadeInUp} className="text-4xl sm:text-5xl lg:text-7xl font-extrabold leading-tight tracking-tight">
-              Creative Strategy That Builds <br className="hidden lg:block"/>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF3B3B] to-[#ff7b7b]">Powerful Brands</span>
-            </motion.h1>
-            <motion.p variants={fadeInUp} className="text-lg lg:text-xl text-[var(--text-secondary)] max-w-lg">
-              We bring ideas to life through creativity, strategy & smart design. Experts in branding, printing & outdoor advertising solutions.
-            </motion.p>
-            <motion.div variants={fadeInUp} className="flex flex-wrap justify-center lg:justify-start gap-4 pt-4">
-              <button onClick={scrollToServices} className="px-8 py-4 bg-[#FF3B3B] text-white rounded-xl font-bold hover:bg-[#e03131] hover:scale-105 hover:shadow-[0_0_20px_rgba(255,59,59,0.4)] transition-all duration-300 flex items-center gap-2 cursor-pointer">
+            <p className="mb-4 inline-flex items-center rounded-full border border-white/25 bg-white/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] backdrop-blur">
+              LM Advertising Hoardings
+            </p>
+            <h1 className="text-4xl font-extrabold leading-tight md:text-6xl">
+              {currentSlide.title}
+            </h1>
+            <p className="mt-5 max-w-2xl text-base leading-8 text-white/85 md:text-lg">
+              {currentSlide.description}
+            </p>
+            <div className="mt-8 flex flex-wrap gap-4">
+              <button
+                onClick={scrollToServices}
+                className="flex items-center gap-2 rounded-xl bg-[#FF3B3B] px-7 py-4 font-bold text-white shadow-lg transition hover:bg-[#e03131] cursor-pointer"
+              >
                 Explore Services <ArrowRight size={20} />
               </button>
-              <button onClick={scrollToCTA} className="px-8 py-4 border-2 border-[var(--text-primary)] text-[var(--text-primary)] rounded-xl font-bold hover:bg-[var(--text-primary)] hover:text-[var(--app-bg)] transition-all duration-300 cursor-pointer">
+              <button
+                onClick={scrollToCTA}
+                className="rounded-xl border border-white/70 px-7 py-4 font-bold text-white transition hover:bg-white/10 cursor-pointer"
+              >
                 Contact Us
               </button>
-            </motion.div>
-          </motion.div>
-          
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative hidden lg:flex items-center justify-center w-full"
-          >
-            <div className="relative w-full aspect-square max-w-lg">
-                <div className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-[#FF3B3B]/20 to-transparent blur-3xl"></div>
-                <div className="absolute inset-4 border border-[var(--app-card-border)] bg-[var(--app-card-bg)] backdrop-blur-xl rounded-[2rem] shadow-2xl flex items-center justify-center overflow-hidden group">
-                    <img src="/images/ceo-Imadvertising.jpg" alt="Advertising Graphic" className="w-full h-full object-cover opacity-30 group-hover:opacity-40 transition-opacity duration-700 mix-blend-luminosity" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[var(--app-bg)] via-transparent to-transparent"></div>
-                    <MonitorPlay className="absolute w-24 h-24 text-[var(--text-primary)] opacity-40 group-hover:scale-110 transition-transform duration-700" />
-                </div>
-                {/* Floating UI Elements */}
-                <motion.div 
-                  animate={{ y: [0, -15, 0] }}
-                  transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-                  className="absolute top-10 -right-8 p-4 rounded-2xl glass-card shadow-xl z-20 flex items-center gap-3"
-                >
-                    <Target className="w-8 h-8 text-[#FF3B3B]" />
-                    <div className="text-left">
-                        <div className="text-sm font-bold">Targeted</div>
-                        <div className="text-xs text-[var(--text-secondary)]">Campaigns</div>
-                    </div>
-                </motion.div>
-                <motion.div 
-                  animate={{ y: [0, 20, 0] }}
-                  transition={{ repeat: Infinity, duration: 5, ease: "easeInOut", delay: 1 }}
-                  className="absolute bottom-12 -left-8 p-5 rounded-2xl glass-card shadow-xl z-20"
-                >
-                    <div className="text-3xl font-extrabold">10M+</div>
-                    <div className="text-sm font-medium text-[var(--text-secondary)]">Daily Reach</div>
-                </motion.div>
             </div>
           </motion.div>
+
+          <div className="flex items-end justify-between gap-4 lg:flex-col lg:justify-end">
+            <div className="flex gap-3">
+              <button
+                onClick={goToPreviousSlide}
+                aria-label="Show previous hoarding"
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-white/35 bg-white/10 text-white backdrop-blur transition hover:bg-white/20 cursor-pointer"
+              >
+                <ChevronLeft size={22} />
+              </button>
+              <button
+                onClick={goToNextSlide}
+                aria-label="Show next hoarding"
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-white/35 bg-white/10 text-white backdrop-blur transition hover:bg-white/20 cursor-pointer"
+              >
+                <ChevronRight size={22} />
+              </button>
+            </div>
+
+            <div className="flex items-center gap-2">
+              {HOARDING_SLIDES.map((slide, index) => (
+                <button
+                  key={slide.title}
+                  onClick={() => setActiveSlide(index)}
+                  aria-label={`Show ${slide.title}`}
+                  className={`h-2.5 rounded-full transition cursor-pointer ${
+                    index === activeSlide ? "w-8 bg-[#FF3B3B]" : "w-2.5 bg-white/55"
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* 2. STATS SECTION */}
-      <section className="w-full max-w-7xl px-6 lg:px-20 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-                { label: "Projects Delivered", value: `${stats.projects}+` },
-                { label: "Years Experience", value: `${stats.experience}+` },
-                { label: "Client Retention", value: `${stats.retention}%` }
-            ].map((stat, i) => (
-                <motion.div 
-                    key={i}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.1 }}
-                    className="glass-card rounded-2xl p-8 text-center hover:-translate-y-2 hover:shadow-[0_10px_30px_rgba(255,59,59,0.1)] transition-all duration-300"
-                >
-                    <h3 className="text-4xl md:text-5xl font-extrabold text-[#FF3B3B] mb-2">{stat.value}</h3>
-                    <p className="text-lg font-medium text-[var(--text-secondary)]">{stat.label}</p>
-                </motion.div>
-            ))}
-        </div>
-      </section>
-
-      {/* 3. SERVICES SECTION */}
+      {/* 2. SERVICES SECTION */}
       <section ref={servicesRef} className=" w-full max-w-7xl px-6 lg:px-20 py-20 ">
         <div className="text-center mb-16 ">
             <h2 className="text-3xl md:text-5xl font-bold mb-4">Our Premium <span className="text-[#FF3B3B]">Services</span></h2>
@@ -265,7 +260,7 @@ const Home = () => {
       </section>
 
       {/* 6. CEO MESSAGE */}
-      <section className="w-full py-24 bg-gradient-to-b from-transparent to-[var(--app-card-border)] relative">
+      {/* <section className="w-full py-24 bg-gradient-to-b from-transparent to-[var(--app-card-border)] relative">
         <div className="max-w-4xl mx-auto px-6 text-center">
             <motion.div 
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -288,7 +283,7 @@ const Home = () => {
                 </div>
             </motion.div>
         </div>
-      </section>
+      </section> */}
 
       {/* 7. LOCATIONS SECTION */}
       <section className="w-full max-w-7xl px-6 lg:px-20 py-24 text-center">
