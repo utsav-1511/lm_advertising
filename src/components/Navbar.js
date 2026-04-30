@@ -5,6 +5,10 @@ import { Menu, Moon, Sun, X } from "lucide-react";
 
 const logo = new URL("../../public/logo.png", import.meta.url).href;
 const DESKTOP_BREAKPOINT = 1024;
+export const openPDF = () => {
+      window.open("https://drive.google.com/uc?export=view&id=1pv8hcb-948Z1QSsPNLd0d7q6fQVafVbX");
+    };
+
 
 const Navbar = ({ theme = "light", onToggleTheme }) => {
   // Controls navbar visibility on scroll
@@ -63,9 +67,7 @@ const Navbar = ({ theme = "light", onToggleTheme }) => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-    const openPDF = () => {
-      window.open("https://drive.google.com/uc?export=view&id=1pv8hcb-948Z1QSsPNLd0d7q6fQVafVbX");
-    };
+    
     return (
     <div
       className={`fixed top-0 left-0 right-0 z-50 flex justify-center px-3 sm:px-4 lg:px-0 pointer-events-none transition-all duration-500 ${

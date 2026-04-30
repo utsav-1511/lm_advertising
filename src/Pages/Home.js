@@ -9,6 +9,9 @@ import {
 import { useNavigate } from "react-router"; // Agar react-router-dom use kar rahe hain toh wahan se
 const CEO_IMAGE = new URL("/public/images/ceo-Imadvertising.jpg", import.meta.url).href;
 
+import { openPDF } from "../components/Navbar";
+import { Link } from "react-router";
+
 const HOARDING_SLIDES = [
   {
     src: "https://images.unsplash.com/photo-1531935916357-224c16b5ace3?auto=format&fit=crop&w=1600&q=85",
@@ -158,7 +161,7 @@ const Home = () => {
             <p className="text-[var(--text-secondary)] max-w-2xl mx-auto text-lg">Comprehensive outdoor advertising and branding solutions to maximize your visibility.</p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <Link to={"/our-products"} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {[
                 { icon: <Presentation />, title: "Hoardings", desc: "High-impact billboards in prime locations." },
                 { icon: <ImageIcon />, title: "Wall Wraps", desc: "Transform empty walls into brand canvases." },
@@ -184,7 +187,7 @@ const Home = () => {
                     <p className="text-[var(--text-secondary)] text-sm">{service.desc}</p>
                 </motion.div>
             ))}
-        </div>
+        </Link>
       </section>
 
       {/* 4. ABOUT / STORY SECTION */}
@@ -286,7 +289,7 @@ const Home = () => {
       </section> */}
 
       {/* 7. LOCATIONS SECTION */}
-      <section className="w-full max-w-7xl px-6 lg:px-20 py-24 text-center">
+      {/* <section className="w-full max-w-7xl px-6 lg:px-20 py-24 text-center">
         <h2 className="text-3xl md:text-4xl font-bold mb-12">Our Prime <span className="text-[#FF3B3B]">Locations</span></h2>
         <div className="flex flex-wrap justify-center gap-6">
             {["Prayagraj", "Kanpur", "Varanasi", "Lucknow", "Ayodhya"].map((city, i) => (
@@ -303,7 +306,7 @@ const Home = () => {
                 </motion.div>
             ))}
         </div>
-      </section>
+      </section> */}
 
       {/* 8. FINAL CTA SECTION */}
       <section ref={ctaRef} className="w-full py-24 px-6 relative overflow-hidden">
@@ -329,7 +332,8 @@ const Home = () => {
                 <button className="px-10 py-5 bg-white text-[#FF3B3B] rounded-xl font-bold text-lg hover:bg-gray-100 hover:scale-105 transition-all shadow-xl cursor-pointer">
                     Get Started
                 </button>
-                <a href="tel:+919876543210" className="block w-fit">
+                
+                <a href="tel:955933808" className="block w-fit">
                     <button className="px-10 py-5 border-2 border-white text-white rounded-xl font-bold text-lg hover:bg-white/10 transition-all flex items-center gap-2 cursor-pointer">
                         <PhoneCall size={20} /> Call Now
                     </button>
@@ -339,12 +343,13 @@ const Home = () => {
       </section>
 
       {/* 9. FOOTER */}
-      <footer className="w-full bg-[var(--app-bg)] text-[var(--text-primary)] py-16 px-6 lg:px-20">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 border-b border-[var(--app-bg)]/10 pb-12">
+      
+      <footer className="w-full bg-[var(--app-bg)] text-[var(--text-primary)] py-8 px-6 lg:px-20">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 border-b border-[var(--app-bg)]/10 pb-8">
             <div>
-                <h3 className="text-2xl font-black text-[#FF3B3B] mb-6">LM ADVERTISING</h3>
+                <h3 className="text-2xl font-black text-[#FF3B3B] mb-6">Get in touch</h3>
                 <p className="opacity-70 max-w-sm mb-6">
-                    Premium outdoor advertising, branding, and printing solutions based in Prayagraj, UP.
+                    Follow our Social Media platforms for latest updates and notifications.
                 </p>
                 <div className="flex gap-4">
                     <a href="https://www.instagram.com/lmadvertising.in/" className="w-10 h-10 rounded-full bg-[var(--app-bg)]/10 flex items-center justify-center hover:bg-[#FF3B3B] transition-colors"><InstagramIcon /></a>
@@ -352,30 +357,30 @@ const Home = () => {
                     <a href="https://www.linkedin.com/company/lm-advertising-a-360-advertising-agency/" className="w-10 h-10 rounded-full bg-[var(--app-bg)]/10 flex items-center justify-center hover:bg-[#FF3B3B] transition-colors"><LinkedinIcon /></a>
                 </div>
             </div>
-            
-            <div>
-                <h4 className="text-lg font-bold mb-6">Contact Us</h4>
+            <div className="flex justify-center">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3603.1097577430596!2d81.76768547551633!3d25.43459382204404!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3985338aaf55f283%3A0xc01cd07bd1676a6a!2sLM%20ADVERTISING!5e0!3m2!1sen!2sin!4v1777577682869!5m2!1sen!2sin" width="400" height="230" style={  {border:0}} loading="lazy" ></iframe>      
+              
+                {/* <h4 className="text-lg font-bold mb-6">Contact Us</h4>
                 <div className="flex flex-col gap-4 opacity-80">
                     <div className="flex items-center gap-3"><PhoneCall size={18} className="text-[#FF3B3B]" /> +91 98765 43210</div>
                     <div className="flex items-center gap-3"><Send size={18} className="text-[#FF3B3B]" /> hello@lmadvertising.com</div>
                     <div className="flex items-center gap-3"><MapPin size={18} className="text-[#FF3B3B]" /> Civil Lines, Prayagraj, UP</div>
-                </div>
+                </div> */}
             </div>
             
             <div>
-                <h4 className="text-lg font-bold mb-6">Quick Links</h4>
+                <h4 className="text-lg font-bold mb-6 ">Quick Links</h4>
                 <div className="flex flex-col gap-3 opacity-80">
                     <a href="#" className="hover:text-[#FF3B3B] transition-colors">Home</a>
                     <a href="about" className="hover:text-[#FF3B3B] transition-colors">About Us</a>
                     <a href="our-products" className="hover:text-[#FF3B3B] transition-colors">Our Services</a>
-                    <a href="our-clients" className="hover:text-[#FF3B3B] transition-colors">Portfolio</a>
+                    <a onClick={openPDF} className="hover:text-[#FF3B3B] transition-colors">Brochure</a>
                     <a href="reach-us" className="hover:text-[#FF3B3B] transition-colors">Reach Us</a>
                 </div>
             </div>
         </div>
-        <div className="max-w-7xl mx-auto pt-8 flex flex-col md:flex-row items-center justify-between opacity-50 text-sm">
+        <div className="max-w-7xl mx-auto pt-2 flex flex-col md:flex-row items-center justify-center opacity-50 text-sm">
             <p>&copy; {new Date().getFullYear()} LM Advertising. All rights reserved.</p>
-            <p>Developed by DevKrafto Solutions <span className="text-[#FF3B3B]">♥</span></p>
         </div>
       </footer>
     </div>
